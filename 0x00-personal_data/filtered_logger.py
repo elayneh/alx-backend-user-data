@@ -48,5 +48,6 @@ def get_logger() -> logging.Logger:
     logger.setLevel(logging.INFO)
     logger.propagate = False
     logger.StreamHandler().logging.Formatter(RedactingFormatter)
-    logger.addHandler(handler)
+    logger.addHandler(logger.StreamHandler(
+    ).logging.Formatter(RedactingFormatter))
     return logger
