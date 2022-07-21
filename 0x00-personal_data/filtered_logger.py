@@ -9,6 +9,7 @@ import logging
 from typing import List
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+""" tuple that contains five most relevant data """
 
 
 def filter_datum(fields: List[str],
