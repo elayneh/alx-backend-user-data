@@ -2,7 +2,6 @@
 """ Logging """
 
 
-from cgitb import handler
 import re
 import os
 import mysql.connector
