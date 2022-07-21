@@ -4,6 +4,8 @@
 
 import re
 import os
+from unittest import result
+from webbrowser import get
 import mysql.connector
 import logging
 from typing import List
@@ -52,3 +54,40 @@ def get_logger() -> logging.Logger:
     handler.setFormatter(RedactingFormatter(PII_FIELDS))
     logger.addHandler(handler)
     return logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """ Return connector """
+    return mysql.connector.connect(
+        host=os.environ.get('PERSONAL_DATA_conn_HOST', 'localhost'),
+        user=os.environ.get('PERSONAL_DATA_conn_USERNAME', 'root'),
+        password=os.environ.get('PERSONAL_DATA_conn_PASSWORD', ''),
+        database=os.environ.get('PERSONAL_DATA_conn_NAME',)
+    )
+
+
+def main() -> None:
+    """ Main method """
+    conn = get_db()
+    cursor = conn.cursor()
+    query = "SELECT * FROM users;"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    for row in result:
+        message = f"name={row[0]}; " + \
+                  f"email={row[1]}; " + \
+                  f"phone={row[2]}; " + \
+                  f"ssn={row[3]}; " + \
+                  f"password={row[4]};"
+        print(message)
+
+    log_record = logging.LogRecord("my_logger", logging.INFO,
+                                   None, None, message, None, None)
+    formatter = RedactingFormatter(PII_FIELDS)
+    formatter.format(log_record)
+    cursor.close()
+    conn.close()
+
+
+if __name__ == "__main__":
+    main()
