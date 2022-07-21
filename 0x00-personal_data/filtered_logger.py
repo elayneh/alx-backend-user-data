@@ -1,16 +1,12 @@
 #!/usr/bin/env python3
 """ Logging """
 
-from asyncio.log import logger
-import logging
-import os
-from attr import field
-import mysql.connector
+
 import re
+import os
+import mysql.connector
+import logging
 from typing import List
-
-
-logger = logging.getLogger()
 
 
 def filter_datum(fields: List[str],
