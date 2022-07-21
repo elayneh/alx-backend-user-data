@@ -2,6 +2,7 @@
 """ Logging """
 
 
+from cgitb import handler
 import re
 import os
 import mysql.connector
@@ -47,7 +48,7 @@ def get_logger() -> logging.Logger:
     logger = logging.getLogger(name="user_data")
     logger.setLevel(logging.INFO)
     logger.propagate = False
-    logger.StreamHandler().logging.Formatter(RedactingFormatter)
+    logger.StreamHandler().logging.Formatter(RedactingFormatter(PII_FIELDS))
     logger.addHandler(logger.StreamHandler(
     ).logging.Formatter(RedactingFormatter))
     return logger
