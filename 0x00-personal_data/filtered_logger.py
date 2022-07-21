@@ -2,11 +2,14 @@
 """ Logging """
 
 
+from cgitb import handler
 import re
 import os
 import mysql.connector
 import logging
 from typing import List
+
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 def filter_datum(fields: List[str],
@@ -37,3 +40,13 @@ class RedactingFormatter(logging.Formatter):
         """ filter values in incoming log records """
         return filter_datum(self.fields, self.REDACTION,
                             super().format(record), self.SEPARATOR)
+
+
+def get_logger() -> logging.Logger:
+    """ Return logging.Logger object """
+    logger = logging.getLogger(name="user_data")
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+    logger.StreamHandler().logging.Formatter(RedactingFormatter)
+    logger.addHandler(handler)
+    return logger
