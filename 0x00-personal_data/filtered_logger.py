@@ -2,14 +2,13 @@
 """ Logging """
 
 
-from cgitb import handler
 import re
 import os
 import mysql.connector
 import logging
 from typing import List
 
-PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 """ tuple that contains five most relevant data """
 
 
@@ -34,6 +33,7 @@ class RedactingFormatter(logging.Formatter):
     SEPARATOR = ";"
 
     def __init__(self, fields: List[str]):
+        """ constractor """
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
@@ -45,10 +45,10 @@ class RedactingFormatter(logging.Formatter):
 
 def get_logger() -> logging.Logger:
     """ Return logging.Logger object """
-    logger = logging.getLogger(name="user_data")
+    logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
     logger.propagate = False
-    logger.StreamHandler().logging.Formatter(RedactingFormatter(PII_FIELDS))
-    logger.addHandler(logger.StreamHandler(
-    ).logging.Formatter(RedactingFormatter))
+    handler = logging.StreamHandler()
+    handler.setFormatter(RedactingFormatter(PII_FIELDS))
+    logger.addHandler(handler)
     return logger
