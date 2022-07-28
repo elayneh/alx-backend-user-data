@@ -2,6 +2,7 @@
 """ Auth class, Require auth with stars """
 from flask import request
 from typing import List, TypeVar
+from os import getenv
 
 
 class Auth():
@@ -14,7 +15,7 @@ class Auth():
             path += '/'
         for i in excluded_paths:
             if i.endswith('*'):
-                if path.startswith(i[:-1]):
+                if path.startswith(i[:1]):
                     return False
         if path in excluded_paths:
             return False
@@ -32,3 +33,10 @@ class Auth():
     def current_user(self, request=None) -> TypeVar('User'):
         """ current user """
         return None
+
+    def session_cookie(self, request=None):
+        """ returns a cookie value from a request """
+        if request is None:
+            return None
+        session_name = getenv('SESSION_NAME')
+        return request.cookies.get(session_name)
