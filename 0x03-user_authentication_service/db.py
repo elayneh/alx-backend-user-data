@@ -2,11 +2,14 @@
 """DB module
 """
 
+from gettext import find
+from platformdirs import user_runtime_dir
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from user import Base, User
+from sqlalchemy.exc import InvalidRequestError, NoResultFound
 
 
 class DB:
@@ -16,7 +19,7 @@ class DB:
     def __init__(self) -> None:
         """Initialize a new DB instance
         """
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+        self._engine = create_engine("sqlite:///a.db", echo=False)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
@@ -37,3 +40,21 @@ class DB:
         self._session.add(user)
         self._session.commit()
         return user
+
+    def find_user_by(self, **kwargs):
+        """ User finder
+        """
+        if kwargs is None:
+            raise InvalidRequestError
+        for user in kwargs.keys():
+            if not hasattr(User, user):
+                raise InvalidRequestError
+        try:
+            user = self._session.query(User).filter_by(**kwargs).first()
+        except InvalidRequestError:
+            raise InvalidRequestError
+
+        if user is None:
+            raise NoResultFound
+        else:
+            return user
