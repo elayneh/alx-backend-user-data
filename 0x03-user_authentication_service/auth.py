@@ -19,7 +19,7 @@ class Auth:
     def __init__(self):
         """ Constractor """
         self._db = DB()
-        
+
     def register_user(self, email: str, password: str) -> User:
         """ method to register new user """
         try:
@@ -28,5 +28,5 @@ class Auth:
                 raise ValueError('User {} already exists'.format(email))
         except NoResultFound:
             hashed_pwd = _hash_password(password)
-            user=self._db.add_user(email, hashed_pwd)
+            user = self._db.add_user(email, hashed_pwd)
             return user
