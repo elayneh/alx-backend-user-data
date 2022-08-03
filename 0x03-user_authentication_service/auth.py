@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-""" Authorization """
+""" Hashing """
 from user import User
 import bcrypt
 from db import DB
-from sqlalchemy.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound
 
 
 def _hash_password(password: str) -> str:
