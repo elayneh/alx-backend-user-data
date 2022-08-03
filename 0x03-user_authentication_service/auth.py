@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """ Authorization """
-from attr import has
 import bcrypt
 
 
