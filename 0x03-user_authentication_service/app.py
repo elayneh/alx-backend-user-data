@@ -58,11 +58,11 @@ def logout():
     def profile() -> str:
         """ Profile """
         cookie = request.cookies.get("session_id")
-        user = AUTH.get_user_from_session_id(cookie)
-        if user is None:
-            abort(403)
-        else:
+        try:
+            user = AUTH.get_user_from_session_id(cookie)
             return jsonify({"email": user.email}), 200
+        except Exception:
+            abort(403)
 
     @app.route('/reset_password', methods=['POST'])
     def get_reset_password_token() -> str:
