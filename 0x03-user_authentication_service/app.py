@@ -86,7 +86,7 @@ def logout():
         try:
             AUTH.update_password(reset_token, new_password)
             return jsonify({"email": email, "message": "Password updated"})
-        except Exception as exp:
+        except Exception as e:
             abort(403)
 
 
