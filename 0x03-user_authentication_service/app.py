@@ -2,7 +2,7 @@
 """ Application """
 
 
-from shutil import ExecError
+
 from flask import Flask, jsonify, request, abort, make_response, redirect
 from auth import Auth
 AUTH = Auth()
