@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """ Application """
 
+import email
 from flask import Flask, jsonify, request, abort, make_response, redirect
 from auth import Auth
 AUTH = Auth()
@@ -54,7 +55,7 @@ def logout():
         return redirect('/')
 
     @app.route('/profile', methods=['GET'])
-    def profile():
+    def profile() -> str:
         """ Profile """
         cookie = request.cookies.get("session_id")
         user = AUTH.get_user_from_session_id(cookie)
@@ -62,6 +63,19 @@ def logout():
             abort(403)
         else:
             return jsonify({"email": user.email}), 200
+
+    @app.route('/reset_password', methods=['POST'])
+    def get_reset_password_token():
+        """ Get reset tokem """
+        email = request.form.get('email')
+        if not email:
+            abort(403)
+        else:
+            token = AUTH.get_reset_password_token(email)
+            if not token:
+                abort(403)
+            else:
+                return jsonify({"email": email, "reset_token": token}), 200
 
 
 if __name__ == "__main__":
