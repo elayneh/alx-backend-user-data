@@ -71,11 +71,8 @@ def logout():
         if not email:
             abort(403)
         else:
-            token = AUTH.get_reset_password_token(email)
-            if not token:
-                abort(403)
-            else:
-                return jsonify({"email": email, "reset_token": token}), 200
+            reset_token = AUTH.get_reset_password_token(email)
+            return jsonify({"email": email, "reset_token": reset_token}), 200
 
 
 if __name__ == "__main__":
