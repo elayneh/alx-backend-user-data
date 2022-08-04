@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """ Application """
 
-import email
+
+from shutil import ExecError
 from flask import Flask, jsonify, request, abort, make_response, redirect
 from auth import Auth
 AUTH = Auth()
@@ -74,6 +75,18 @@ def logout():
                 abort(403)
             return jsonify({"email": email, "reset_token": reset_token}), 200
         except ValueError:
+            abort(403)
+
+    @app.route('reset_password', methods=['PUT'])
+    def update_password():
+        """ Update password """
+        email = request.form.get('email')
+        reset_token = request.form.get('reset_token')
+        new_password = request.form.get('new_password')
+        try:
+            AUTH.update_password(reset_token, new_password)
+            return jsonify({"email": email, "message": "Password updated"}), 200
+        except Exception as exp:
             abort(403)
 
 
