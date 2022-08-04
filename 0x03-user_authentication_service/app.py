@@ -66,7 +66,7 @@ def logout():
             return jsonify({"email": user.email}), 200
 
     @app.route('/reset_password', methods=['POST'])
-    def get_reset_password_token():
+    def get_reset_password_token() -> str:
         """ respond reset_token """
         email = request.form.get('email')
         try:
@@ -78,7 +78,7 @@ def logout():
             abort(403)
 
     @app.route('/reset_password', methods=['PUT'])
-    def update_password():
+    def update_password() -> str:
         """ updates the user password """
         email = request.form.get('email')
         reset_token = request.form.get('reset_token')
