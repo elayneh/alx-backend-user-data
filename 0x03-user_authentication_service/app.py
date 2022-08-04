@@ -33,6 +33,7 @@ def users():
     except ValueError:
         return jsonify({"message": "email already registered"})
 
+
 @app.route('/sessions', methods=['POST'])
 def sessions():
     email = request.form.get('email')
@@ -42,9 +43,12 @@ def sessions():
     session_id = AUTH.create_session(email)
     if not session_id:
         abort(401)
-    response = make_response(jsonify({"email": email, "message": "logged in "}))
+    response = make_response(
+        jsonify({"email": email, "message": "logged in "}))
     response.set_cookie("session_id", session_id)
     return response
+
+
 @app.route('/sessions', methods=['DELETE'])
 def logout():
     """ Delete the session """
@@ -55,7 +59,7 @@ def logout():
     else:
         AUTH.destroy_session(user.id)
         return redirect('/')
-    
+
     @app.route('/profile', methods=['GET'])
     def profile(self):
         """ Profile """
@@ -65,6 +69,7 @@ def logout():
             abort(403)
         else:
             return jsonify({"email": user.email}), 200
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
