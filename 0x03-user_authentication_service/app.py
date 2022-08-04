@@ -1,12 +1,7 @@
 #!/usr/bin/env python3
 """ Application """
 
-from os import abort
-from flask import Response
-from django.shortcuts import redirect
-from flask import Flask, jsonify, make_response
-import flask
-from requests import request, session
+from flask import Flask, jsonify, request, abort, make_response, redirect
 from auth import Auth
 AUTH = Auth()
 
