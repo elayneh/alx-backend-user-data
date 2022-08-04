@@ -2,7 +2,6 @@
 """ Application """
 
 
-
 from flask import Flask, jsonify, request, abort, make_response, redirect
 from auth import Auth
 AUTH = Auth()
@@ -71,8 +70,6 @@ def logout():
         email = request.form.get('email')
         try:
             reset_token = AUTH.get_reset_password_token(email)
-            if not reset_token:
-                abort(403)
             return jsonify({"email": email, "reset_token": reset_token}), 200
         except ValueError:
             abort(403)
@@ -86,7 +83,7 @@ def logout():
         try:
             AUTH.update_password(reset_token, new_password)
             return jsonify({"email": email, "message": "Password updated"})
-        except Exception as e:
+        except Exception:
             abort(403)
 
 
