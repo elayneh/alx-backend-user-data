@@ -7,7 +7,7 @@ from auth import Auth
 AUTH = Auth()
 
 app = Flask(__name__)
-Check your code 
+
 
 @app.route('/', methods=['GET'])
 def home():
@@ -58,11 +58,11 @@ def logout():
     def profile() -> str:
         """ Profile """
         cookie = request.cookies.get("session_id")
-        try:
-            user = AUTH.get_user_from_session_id(cookie)
-            return jsonify({"email": user.email}), 200
-        except Exception:
+        user = AUTH.get_user_from_session_id(cookie)
+        if user is None:
             abort(403)
+        else:
+            return jsonify({"email": user.email}), 200
 
     @app.route('/reset_password', methods=['POST'])
     def get_reset_password_token() -> str:
@@ -70,6 +70,8 @@ def logout():
         email = request.form.get('email')
         try:
             reset_token = AUTH.get_reset_password_token(email)
+            if not reset_token:
+                abort(403)
             return jsonify({"email": email, "reset_token": reset_token}), 200
         except ValueError:
             abort(403)
@@ -83,7 +85,7 @@ def logout():
         try:
             AUTH.update_password(reset_token, new_password)
             return jsonify({"email": email, "message": "Password updated"})
-        except Exception:
+        except Exception as e:
             abort(403)
 
 
