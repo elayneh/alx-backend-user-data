@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Hashing """
 
-
+from requests import session
 from user import User
 import bcrypt
 from db import DB

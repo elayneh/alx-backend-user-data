@@ -7,7 +7,7 @@ from auth import Auth
 AUTH = Auth()
 
 app = Flask(__name__)
-
+Check your code 
 
 @app.route('/', methods=['GET'])
 def home():
