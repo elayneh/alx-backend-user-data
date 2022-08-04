@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 """ Application """
 
-from crypt import methods
-import email
 from os import abort
-from typing_extensions import Self
-from urllib import response
+from flask import Response
 from django.shortcuts import redirect
-from flask import Flask, flash, jsonify, make_response
+from flask import Flask, jsonify, make_response
 import flask
 from requests import request, session
 from auth import Auth
@@ -24,7 +21,7 @@ def home():
 
 @app.route('/users', methods=['POST'])
 def users():
-    """ registers a new user """
+    """ register a new user """
     email = request.form.get('email')
     password = request.form.get('password')
     try:
